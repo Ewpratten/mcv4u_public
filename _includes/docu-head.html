@@ -1,0 +1,34 @@
+<div class="print-hidden">
+    <div class="container" id="html-nav">
+        <div class="row">
+            <div class="col" id="site-title">
+                <h4>Highschool Notes</h4>
+            </div>
+            <div class="col" id="nav-links">
+                <span>
+                    <h4 style="display: inline-block;"><a href="{{site.baseurl}}/">Home</a></h4>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 5vh;"></div>
+</div>
+
+<div class="container" id="docu-head">
+    <div class="row">
+        <div class="col" id="course-name">
+            <h5>{{page.course}}</h5>
+        </div>
+        <div class="col-6" id="header-title">
+            {% if page.last_page %}<h5 class="print-hidden" style="display: inline-block;"><a href="{{page.last_page}}">&lt;</a></h5>{% endif %}
+            <h5 style="display: inline-block;">{{page.title}}</h5>
+            {% if page.next_page %}<h5 class="print-hidden" style="display: inline-block;"><a href="{{page.next_page}}">&gt;</a></h5>{% endif %}
+        </div>
+        <div class="col" id="author-date">
+            <h5>{{page.author}}</h5>
+            <h5 id="date">{{page.date_clean}}</h5>
+        </div>
+    </div>
+
+</div>

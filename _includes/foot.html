@@ -1,0 +1,17 @@
+<script src="{{site.baseurl}}/static/js/dist/jquery-3.3.1.slim.min.js"></script>
+<script src="{{site.baseurl}}/static/js/dist/popper.min.js"></script>
+<script src="{{site.baseurl}}/static/js/dist/bootstrap.min.js"></script>
+
+<!-- rewriting of color boxes -->
+<script>
+    function stylizeColorBoxes(){
+        var all_boxes = document.querySelectorAll(".colorinfo");
+
+        all_boxes.forEach((box => {
+            box.style.borderColor = box.dataset.color;
+        }))
+            
+    }
+
+    stylizeColorBoxes();
+</script>

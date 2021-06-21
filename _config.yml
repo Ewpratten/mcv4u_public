@@ -1,0 +1,44 @@
+title: MCV4U Public
+description: ""
+baseurl: "/mcv4u_public" 
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+collections:
+  notes:
+    output: true
+  assignments:
+    output: true
+  papers:
+    output: true
+
+# Build settings
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  math_engine: mathjax
+sass:
+    sass_dir: _sass
+    style: compressed
+
+plugins:
+  - jekyll-feed
+  - jekyll-redirect-from 
+  - jemoji
+  - jekyll-mentions
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .devcontainer/
+  - .vscode/
+  - README.md
+  - package-lock.json
+  - CNAME
+  - .gitignore
+  - old/

@@ -1,0 +1,34 @@
+---
+course: Highschool Notes
+title: Home
+author: Evan Pratten
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include head.html %}
+</head>
+<body>
+
+    {% include docu-head.html %}
+
+    <div class="container" id= "page-body">
+
+        <h2>Notes</h2>
+        <ul>
+            {% for note in site.notes %}
+            <li>
+                <a href="{{site.baseurl}}{{note.url}}">{{note.course}} // {{note.title}}</a>
+            </li>
+            {% endfor %}
+        </ul>        
+        
+    </div>
+
+    <div class="print-hidden" style="height: 5vh;"></div>
+    
+    {% include foot.html %}
+
+</body>
+</html>

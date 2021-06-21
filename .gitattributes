@@ -1,0 +1,4 @@
+static/tej3m/xcf/evan_final_compressed.tar.xz filter=lfs diff=lfs merge=lfs -text
+static/tej3m/xcf/evan_final_compressed.xcf filter=lfs diff=lfs merge=lfs -text
+static/tej3m/xcf/evan_final.psd filter=lfs diff=lfs merge=lfs -text
+static/tej3m/xcf/evan_final.xcf filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include head.html %}
+
+    <link rel="stylesheet" href="{{site.baseurl}}/static/css/dist/katex.min.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/static/css/dist/tikzjaxfonts.css">
+
+    <style>
+        .node rect {
+            stroke: #333;
+            fill: #fff;
+        }
+
+        .edgePath path {
+            stroke: #333;
+            fill: #333;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include docu-head.html %}
+
+    <div class="container" id="page-body">
+        {{content}}
+    </div>
+
+    <div class="print-hidden" style="height: 5vh;"></div>
+
+    {% include foot.html %}
+
+    <script src="{{site.baseurl}}/static/js/dist/katex/katex.min.js"></script>
+    <script src="{{site.baseurl}}/static/js/dist/katex/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <script src="{{site.baseurl}}/static/js/dist/desmos.js"></script>
+    <script src="{{site.baseurl}}/static/js/dist/dagre-d3.min.js"></script>
+    <script src="{{site.baseurl}}/static/js/dist/d3.v5.min.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+
+    <!-- Parse the Latex divs with Katex-->
+    <script type="text/javascript">
+        renderMathInElement(
+            document.body,
+            {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "\\[", right: "\\]", display: true },
+                    { left: "$", right: "$", display: false },
+                    { left: "\\(", right: "\\)", display: false }
+                ]
+            }
+        );
+    </script>
+
+    <!-- Inline-replace desmos graphs -->
+    <script>
+
+        function replaceDesmosGraph(elem) {
+
+            // Get all graph entries
+            var entries = elem.querySelectorAll("expression");
+
+            // Build in to a list of expressions
+            var expressions = [];
+            entries.forEach((entry) => {
+                expressions.push({
+                    id: entry.dataset.id,
+                    latex: entry.innerText,
+                    label: entry.dataset.label,
+                    showLabel: entry.dataset.label != undefined
+                })
+            });
+
+            // Clear the contents
+            elem.innerHTML = "";
+
+            // Configure desmos
+            var calculator = Desmos.GraphingCalculator(elem);
+            calculator.setExpressions(expressions);
+            calculator.updateSettings({
+                expressionsCollapsed: true,
+                keypad: false
+            });
+        }
+
+        // Load all
+        document.querySelectorAll(".desmos-graph").forEach((graph) => {
+            replaceDesmosGraph(graph);
+        });
+
+    </script>
+
+    <!-- Load and configure state machines -->
+    <script>
+
+        function replaceStateMachine(elem) {
+
+            // Build a graph
+            var g = new dagreD3.graphlib.Graph().setGraph({});
+
+            // Find all states and transitions
+            var defined_states = elem.querySelectorAll("state");
+            var defined_transitions = elem.querySelectorAll("transition");
+
+            // Set all states
+            defined_states.forEach((state) => {
+                g.setNode(state.dataset.short, {
+                    label: state.innerText
+                })
+            });
+
+            // Set all transitions
+            defined_transitions.forEach((transition) => {
+                g.setEdge(
+                    transition.dataset.from,
+                    transition.dataset.to,
+                    {
+                        label: transition.innerText
+                    }
+                )
+            });
+
+            // Set some general styles
+            g.nodes().forEach(function (v) {
+                var node = g.node(v);
+                node.rx = node.ry = 5;
+            });
+
+            // Clear the inner data with a plain SVG
+            var randID = Math.floor(Math.random() * 1000);
+            elem.innerHTML = `<svg id="state-machine-${randID}" class="mx-auto"><g></g></svg>`;
+            elem.classList.add("text-center");
+
+            // Get the svg and configure it
+            var svg = d3.select(`#state-machine-${randID}`);
+            var inner = svg.select("g");
+
+            // Render the graph to the SVG
+            var renderer = new dagreD3.render();
+            renderer(inner, g);
+
+            svg.attr('height', g.graph().height);
+
+            if (elem.dataset.scale != undefined) {
+                svg.attr('width', g.graph().width * elem.dataset.scale);
+            } else {
+                svg.attr('width', g.graph().width);
+            }
+
+
+        }
+
+        // Render all state machines
+        document.querySelectorAll(".state-machine").forEach(replaceStateMachine);
+
+    </script>
+
+    <!-- Youtube inject -->
+    <script src="{{site.baseurl}}/static/js/injection/youtube.js"></script>
+
+</body>
+
+</html>
